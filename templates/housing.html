@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Заявки в ЖКХ — Сервисы Ходынки</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Montserrat", sans-serif;
+      background-color: #f5f6f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cover {
+      height: 35vh;
+      min-height: 220px;
+      background: linear-gradient(180deg, #EB5757 0%, #F2994A 100%);
+      border-radius: 0 0 30px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .cover h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .cover p {
+      font-size: 0.9rem;
+      opacity: 0.95;
+      margin-top: 6px;
+    }
+
+    .main-block {
+      background: white;
+      border-radius: 30px;
+      padding: 30px 20px 60px;
+      margin: -50px 15px 40px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 16px;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      margin-top: 6px;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #EB5757;
+      box-shadow: 0 0 0 3px rgba(235, 87, 87, 0.15);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #EB5757;
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 25px;
+      box-shadow: 0 6px 16px rgba(235, 87, 87, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      box-shadow: 0 10px 22px rgba(235, 87, 87, 0.3);
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      margin-top: 25px;
+      font-weight: 600;
+      color: #00bb5a;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: #EB5757;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .my-requests {
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid #f0f0f0;
+    }
+
+    .my-requests h2 {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .request-card {
+      background: #fff5f5;
+      border: 1px solid #ffe0e0;
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .request-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .request-card p {
+      margin: 3px 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .status.new {
+      background: #fff4cc;
+      color: #8a6d00;
+    }
+
+    .status.inprogress {
+      background: #e6f0ff;
+      color: #004aad;
+    }
+
+    .status.done {
+      background: #eaffea;
+      color: #009f3c;
+    }
+
+    .no-requests {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="cover">
+      <h1>🏠 Заявки в ЖКХ</h1>
+      <p>Сообщите о проблеме или оставьте заявку на ремонт</p>
+    </div>
+
+    <div class="main-block">
+      <a href="index.html" class="back-link">← Назад к сервисам</a>
+
+      <form id="housingForm">
+        <label for="name">Ваше имя</label>
+        <input type="text" id="name" placeholder="Введите имя" required>
+
+        <label for="apartment">Квартира</label>
+        <input type="text" id="apartment" placeholder="Например: 142" required>
+
+        <label for="category">Категория проблемы</label>
+        <select id="category" required>
+          <option disabled selected>Выберите категорию</option>
+          <option>Сантехника</option>
+          <option>Электрика</option>
+          <option>Отопление</option>
+          <option>Двери/окна</option>
+          <option>Другое</option>
+        </select>
+
+        <label for="description">Описание проблемы</label>
+        <textarea id="description" rows="4" placeholder="Опишите подробно, что нужно исправить" required></textarea>
+
+        <button type="submit" class="submit-btn">Отправить заявку</button>
+      </form>
+
+      <div class="success-message" id="successMsg">✅ Заявка отправлена!</div>
+
+      <div class="my-requests">
+        <h2>Мои заявки</h2>
+        <div id="requestsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('housingForm');
+    const successMsg = document.getElementById('successMsg');
+    const requestsList = document.getElementById('requestsList');
+
+    function renderRequests() {
+      const requests = JSON.parse(localStorage.getItem('housingRequests')) || [];
+      
+      if (requests.length === 0) {
+        requestsList.innerHTML = '<p class="no-requests">У вас пока нет заявок</p>';
+        return;
+      }
+
+      requestsList.innerHTML = '';
+      requests.forEach(req => {
+        const div = document.createElement('div');
+        div.className = 'request-card';
+        div.innerHTML = `
+          <h3>${req.category}</h3>
+          <p><strong>Квартира:</strong> ${req.apartment}</p>
+          <p><strong>Описание:</strong> ${req.description}</p>
+          <p><strong>Создано:</strong> ${req.createdAt}</p>
+          <span class="status ${req.status}">
+            ${req.status === 'new' ? 'Новая' :
+              req.status === 'inprogress' ? 'В работе' : 'Выполнено'}
+          </span>
+        `;
+        requestsList.appendChild(div);
+      });
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const request = {
+        name: document.getElementById('name').value,
+        apartment: document.getElementById('apartment').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        status: 'new',
+        createdAt: new Date().toLocaleString('ru-RU')
+      };
+
+      const requests = JSON.parse(localStorage.getItem('housingRequests')) || [];
+      requests.push(request);
+      localStorage.setItem('housingRequests', JSON.stringify(requests));
+
+      successMsg.style.display = 'block';
+      form.reset();
+      renderRequests();
+
+      setTimeout(() => {
+        successMsg.style.display = 'none';
+      }, 3000);
+    });
+
+    renderRequests();
+  </script>
+
+</body>
+</html>

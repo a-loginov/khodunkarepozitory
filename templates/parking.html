@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Парковка — Сервисы Ходынки</title>
+
+  <!-- Шрифт Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Montserrat", sans-serif;
+      background-color: #f2f5f3;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #f2f5f3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Верхняя обложка */
+    .cover {
+      height: 35vh;
+      min-height: 240px;
+      background: linear-gradient(180deg, #2F80ED 0%, #56CCF2 100%);
+      border-radius: 0 0 30px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .cover h1 {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .cover p {
+      font-size: 0.9rem;
+      opacity: 0.95;
+      margin-top: 6px;
+    }
+
+    /* Основной блок */
+    .main-block {
+      background: white;
+      border-radius: 30px;
+      padding: 30px 20px 60px;
+      margin: -60px 15px 40px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+      flex-grow: 1;
+    }
+
+    .main-block h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    /* Сетка карточек */
+    .parking-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    /* Карточки */
+    .parking-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 16px rgba(47, 128, 237, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .parking-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(47, 128, 237, 0.25);
+    }
+
+    .parking-card span.icon {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .parking-info h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .parking-info p {
+      margin: 4px 0 0;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .status {
+      display: inline-block;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 3px 8px;
+      background-color: rgba(47, 128, 237, 0.1);
+      color: #2F80ED;
+    }
+
+    .status.busy {
+      background-color: rgba(235, 87, 87, 0.1);
+      color: #EB5757;
+    }
+
+    .status.free {
+      background-color: rgba(39, 174, 96, 0.1);
+      color: #27AE60;
+    }
+
+    /* Кнопка */
+    .add-btn {
+      display: inline-block;
+      background: linear-gradient(180deg, #2F80ED 0%, #56CCF2 100%);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 25px;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .add-btn:hover {
+      box-shadow: 0 4px 12px rgba(47, 128, 237, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Ссылка Назад */
+    .back-link {
+      text-decoration: none;
+      color: #00bb5a;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="cover">
+      <h1>🚗 Парковка</h1>
+      <p>Ваши парковочные места и гостевые разрешения</p>
+    </div>
+
+    <div class="main-block">
+      <a href="index.html" class="back-link">← Назад к сервисам</a>
+      <h2>Ваши места</h2>
+
+      <div class="parking-list">
+        <div class="parking-card">
+          <span class="icon">🅿️</span>
+          <div class="parking-info">
+            <h3>Место №42 — Подземный паркинг</h3>
+            <p>Статус: <span class="status busy">Занято</span></p>
+          </div>
+        </div>
+
+        <div class="parking-card">
+          <span class="icon">🚙</span>
+          <div class="parking-info">
+            <h3>Место №12 — Наземная зона</h3>
+            <p>Статус: <span class="status free">Свободно</span></p>
+          </div>
+        </div>
+
+        <div class="parking-card">
+          <span class="icon">👤</span>
+          <div class="parking-info">
+            <h3>Гостевая парковка</h3>
+            <p>Разрешение активно до <span class="status">22:00</span></p>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+</body>
+</html>
