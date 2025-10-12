@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Панель консьержа — Сервисы Ходынки</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Montserrat", sans-serif;
+      background-color: #f5f6f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding-bottom: 50px;
+    }
+
+    .cover {
+      height: 30vh;
+      min-height: 200px;
+      background: linear-gradient(180deg, #4b73ff 0%, #66a3ff 100%);
+      border-radius: 0 0 30px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .tabs {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      margin: 20px auto 20px; /* вкладки опущены вниз */
+      width: 90%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #666;
+    }
+
+    .tab.active {
+      background: #4b73ff;
+      color: #fff;
+    }
+
+    .main-block {
+      background: white;
+      border-radius: 30px;
+      padding: 30px 20px 40px;
+      margin: 0 15px 40px;
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .request-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .request-card:hover {
+      transform: scale(1.01);
+    }
+
+    .request-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      color: #333;
+    }
+
+    .request-card p {
+      margin: 3px 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .status.new {
+      background: #fff4cc;
+      color: #8a6d00;
+    }
+
+    .status.inprogress {
+      background: #e6f0ff;
+      color: #004aad;
+    }
+
+    .status.done {
+      background: #eaffea;
+      color: #009f3c;
+    }
+
+    .btns {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn.accept {
+      background: #4b73ff;
+      color: #fff;
+    }
+
+    .btn.done {
+      background: #00bb5a;
+      color: #fff;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .no-requests {
+      text-align: center;
+      color: #888;
+      margin-top: 30px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="cover">
+      <h1>🛎️ Панель консьержа</h1>
+      <p>Заявки и пропуска жильцов</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tabRequests">Заявки</div>
+      <div class="tab" id="tabPasses">Пропуска</div>
+    </div>
+
+    <div class="main-block">
+      <div id="requestsList"></div>
+    </div>
+  </div>
+
+  <script>
+    const tabRequests = document.getElementById('tabRequests');
+    const tabPasses = document.getElementById('tabPasses');
+    const list = document.getElementById('requestsList');
+
+    function renderRequests() {
+      const data = JSON.parse(localStorage.getItem('conciergeRequests')) || [];
+      if (data.length === 0) {
+        list.innerHTML = '<p class="no-requests">Нет заявок</p>';
+        return;
+      }
+      list.innerHTML = '';
+      data.forEach((req, index) => {
+        const div = document.createElement('div');
+        div.className = 'request-card';
+        div.innerHTML = `
+          <h3>${req.name} — кв. ${req.apartment}</h3>
+          <p><strong>Тип:</strong> ${req.service}</p>
+          <p><strong>Комментарий:</strong> ${req.comment}</p>
+          <p><strong>Создано:</strong> ${req.createdAt || '-'}</p>
+          <span class="status ${req.status}">
+            ${req.status === 'new' ? 'Новая' :
+              req.status === 'inprogress' ? 'В работе' : 'Выполнено'}
+          </span>
+          <div class="btns">
+            ${req.status === 'new' ? `<button class="btn accept">Принять</button>` : ''}
+            ${req.status !== 'done' ? `<button class="btn done">Выполнено</button>` : ''}
+          </div>
+        `;
+        div.querySelectorAll('.btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.classList.contains('accept')) req.status = 'inprogress';
+            if (btn.classList.contains('done')) req.status = 'done';
+            data[index] = req;
+            localStorage.setItem('conciergeRequests', JSON.stringify(data));
+            renderRequests();
+          });
+        });
+        list.appendChild(div);
+      });
+    }
+
+    function renderPasses() {
+      const passes = JSON.parse(localStorage.getItem('guestPasses')) || [];
+      if (passes.length === 0) {
+        list.innerHTML = '<p class="no-requests">Нет активных пропусков</p>';
+        return;
+      }
+      list.innerHTML = '';
+      passes.forEach(pass => {
+        const div = document.createElement('div');
+        div.className = 'request-card';
+        div.innerHTML = `
+          <h3>🎫 Пропуск — ${pass.name}</h3>
+          <p><strong>Тип:</strong> ${pass.type}</p>
+          <p><strong>Телефон:</strong> ${pass.phone}</p>
+          <p><strong>Дата:</strong> ${pass.date}</p>
+          <p><strong>Время:</strong> ${pass.time}</p>
+          <p><strong>Комментарий:</strong> ${pass.comment}</p>
+          <span class="status done">Активен</span>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    tabRequests.addEventListener('click', () => {
+      tabRequests.classList.add('active');
+      tabPasses.classList.remove('active');
+      renderRequests();
+    });
+
+    tabPasses.addEventListener('click', () => {
+      tabPasses.classList.add('active');
+      tabRequests.classList.remove('active');
+      renderPasses();
+    });
+
+    // Автообновление панели
+    setInterval(() => {
+      if (tabRequests.classList.contains('active')) renderRequests();
+      else renderPasses();
+    }, 3000);
+
+    renderRequests();
+  </script>
+</body>
+</html>
